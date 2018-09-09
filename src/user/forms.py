@@ -1,8 +1,6 @@
-from captcha.fields import ReCaptchaField
-
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.utils.translation import ugettext_noop, ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 
 from .models import FruitUser, Message
 
@@ -70,14 +68,6 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class CaptchaSignupForm(forms.Form):
-
-    captcha = ReCaptchaField()
-
-    def signup(self, request, user):
-        pass
-
-
 class MessageAdminForm(forms.ModelForm):
     class Meta:
         model = Message
@@ -85,22 +75,3 @@ class MessageAdminForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'rows': 5, 'cols': 86, 'maxlength': 255}),
         }
-
-
-class UserSettingsForm(forms.ModelForm):
-    class Meta:
-        model = FruitUser
-        fields = ('avatar', 'motto')
-        widgets = {
-            'motto': forms.Textarea(attrs={'rows': 4, 'cols': 86, 'maxlength': 255}),
-        }
-        help_texts = {
-            'motto': _('Short text about you, that will appear in your profile.'),
-            'avatar': _('You can change your profile picture by uploading custom image '
-                        '(up to 1 MB), or alternatively via '
-                        '<a href="http://gravatar.com" rel="noopener noreferrer" '
-                        'target="_blank">gravatar.com</a> service.')
-        }
-
-
-override_wrong_default_translation = ugettext_noop('Username or e-mail')
